@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Semillas de Fe & Amor</title>
+    <!-- Tailwind CSS para un diseño espectacular -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos de Lucide para botones estéticos -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts para tipografía elegante -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Configuración PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#6366f1" />
+    <link
+      rel="apple-touch-icon"
+      href="https://images.unsplash.com/photo-1504051771394-dd2e66b2e08f?w=192&h=192&fit=crop"
+    />
+
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .serif-title {
+        font-family: 'Playfair Display', serif;
+      }
+      /* Animación del fondo degradado */
+      .gradient-bg {
+        background-size: 400% 400%;
+        animation: gradientTransition 15s ease infinite;
+      }
+      @keyframes gradientTransition {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="gradient-bg min-h-screen flex flex-col justify-between p-4 transition-all duration-1000 ease-in-out text-slate-800"
+    id="body-bg"
+  >
+    <!-- Encabezado de la App -->
+    <header
+      class="w-full max-w-md mx-auto flex justify-between items-center pt-4 px-2"
+    >
+      <div>
+        <h1 class="text-xs uppercase tracking-widest text-white/80 font-bold">
+          Pan de Vida
+        </h1>
+        <p class="text-lg font-semibold text-white serif-title" id="app-title">
+          Semillas de Fe
+        </p>
+      </div>
+      <button
+        onclick="toggleFavoritesModal()"
+        class="relative p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition"
+      >
+        <i data-lucide="bookmark"></i>
+        <span
+          id="fav-badge"
+          class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center hidden"
+          >0</span
+        >
+      </button>
+    </header>
+
+    <!-- Tarjeta Central (Versículo) -->
+    <main class="w-full max-w-md mx-auto my-auto py-6">
+      <div
+        id="verse-card"
+        class="bg-white/90 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 transition-all duration-700 transform scale-100 flex flex-col justify-between min-h-[380px]"
+      >
+        <!-- Categoría y Tipo -->
+        <div class="flex justify-between items-center mb-6">
+          <span
+            id="category-badge"
+            class="px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm"
+          >
+            Cargando...
+          </span>
+          <span class="text-xs text-slate-400 font-medium" id="verse-ref-top"
+            >Filipenses 4:13</span
+          >
+        </div>
+
+        <!-- Texto del Versículo -->
+        <div class="my-auto text-center">
+          <i
+            data-lucide="quote"
+            class="mx-auto text-slate-300 mb-4 h-8 w-8 opacity-60"
+          ></i>
+          <p
+            id="verse-text"
+            class="text-xl md:text-2xl font-medium text-slate-800 leading-relaxed serif-title px-1"
+          >
+            "Todo lo puedo en Cristo que me fortalece."
+          </p>
+          <p
+            id="verse-reference"
+            class="text-sm font-semibold mt-4 tracking-wider text-slate-500 uppercase"
+          >
+            — Filipenses 4:13
+          </p>
+        </div>
+
+        <!-- Botones de Acción de la Tarjeta -->
+        <div class="grid grid-cols-3 gap-3 mt-8 pt-4 border-t border-slate-100">
+          <button
+            onclick="copyVerse()"
+            class="flex flex-col items-center justify-center p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-xl transition"
+          >
+            <i data-lucide="copy" class="h-5 w-5 mb-1"></i>
+            <span class="text-[10px] font-semibold">Copiar</span>
+          </button>
+
+          <button
+            onclick="openReflection()"
+            class="flex flex-col items-center justify-center p-2 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-xl transition font-medium"
+          >
+            <i data-lucide="heart-handshake" class="h-5 w-5 mb-1"></i>
+            <span class="text-[10px] font-bold">Reflexión</span>
+          </button>
+
+          <button
+            onclick="toggleFavorite()"
+            class="flex flex-col items-center justify-center p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
+          >
+            <i id="fav-icon" data-lucide="heart" class="h-5 w-5 mb-1"></i>
+            <span class="text-[10px] font-semibold">Favorito</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Botón Siguiente Versículo -->
+      <div class="mt-6 flex justify-center">
+        <button
+          onclick="nextVerse()"
+          class="flex items-center gap-2 bg-white text-slate-800 font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
+        >
+          Siguiente Versículo
+          <i data-lucide="arrow-right" class="h-5 w-5"></i>
+        </button>
+      </div>
+    </main>
+
+    <!-- Botón de Carta Secreta Dedicada (Flotante) -->
+    <footer class="w-full max-w-md mx-auto flex justify-center pb-4">
+      <button
+        onclick="openLetterModal()"
+        class="flex items-center gap-2 bg-gradient-to-r from-rose-400 to-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-md hover:opacity-90 transition animate-bounce"
+      >
+        <i data-lucide="sparkles" class="h-4 w-4"></i>
+        Un mensaje para ti, especial
+      </button>
+    </footer>
+
+    <!-- MODAL: Reflexión Devocional -->
+    <div
+      id="reflection-modal"
+      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
+    >
+      <div
+        class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-all duration-300"
+      >
+        <div class="flex justify-between items-start mb-4">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="book-open" class="text-indigo-500"></i> Reflexión
+            del Día
+          </h3>
+          <button
+            onclick="closeReflection()"
+            class="text-slate-400 hover:text-slate-600 p-1"
+          >
+            <i data-lucide="x" class="h-6 w-6"></i>
+          </button>
+        </div>
+        <div
+          class="max-h-[300px] overflow-y-auto pr-2 text-slate-600 leading-relaxed space-y-3"
+          id="reflection-content"
+        >
+          <!-- Contenido dinámico -->
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+          <button
+            onclick="closeReflection()"
+            class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-xl hover:bg-indigo-700 transition"
+          >
+            Amén, gracias
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Favoritos -->
+    <div
+      id="favorites-modal"
+      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
+    >
+      <div
+        class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-all duration-300"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="bookmark" class="text-rose-500"></i> Tus Versos
+            Guardados
+          </h3>
+          <button
+            onclick="toggleFavoritesModal()"
+            class="text-slate-400 hover:text-slate-600 p-1"
+          >
+            <i data-lucide="x" class="h-6 w-6"></i>
+          </button>
+        </div>
+        <div
+          id="favorites-list"
+          class="max-h-[350px] overflow-y-auto pr-2 space-y-3 text-slate-600"
+        >
+          <!-- Lista de favoritos -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Carta Secreta de Dedicatoria -->
+    <div
+      id="letter-modal"
+      class="fixed inset-0 bg-slate-900/65 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
+    >
+      <div
+        class="bg-gradient-to-b from-rose-50 to-white rounded-3xl max-w-sm w-full p-8 shadow-2xl text-center relative border border-rose-100"
+      >
+        <div
+          class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-rose-500 text-white p-4 rounded-full shadow-lg"
+        >
+          <i data-lucide="heart" class="h-8 w-8 fill-current"></i>
+        </div>
+        <button
+          onclick="closeLetterModal()"
+          class="absolute top-4 right-4 text-slate-400 hover:text-rose-500"
+        >
+          <i data-lucide="x" class="h-6 w-6"></i>
+        </button>
+        <div class="mt-6">
+          <h3 class="text-2xl serif-title font-bold text-rose-600 mb-4">
+            Para una persona especial
+          </h3>
+          <div class="text-slate-600 leading-relaxed italic text-sm space-y-4">
+            <p>
+              "Le pido a Dios que esta aplicación no solo sea una herramienta en
+              tu celular, sino un pequeño refugio de paz en tu día a día."
+            </p>
+            <p>
+              "Que cada promesa y palabra aquí guardada te recuerde lo valiosa
+              que eres para Dios, y el hermoso reflejo de Su amor que transmites
+              al mundo."
+            </p>
+            <p class="font-semibold text-rose-500 not-italic">
+              — Con mucho cariño y orando siempre por ti.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast (Aviso temporal de copiado) -->
+    <div
+      id="toast"
+      class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-lg text-xs font-semibold z-50 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2"
+    >
+      <i data-lucide="check" class="text-emerald-400 h-4 w-4"></i>
+      <span id="toast-msg">Copiado con amor ✨</span>
+    </div>
+
+    <!-- Lógica de la Aplicación Sincronizada -->
+    <script type="module">
+      // Importamos directamente la base de datos real y unificada de la aplicación
+      import versesDB from '../src/data/versesDB.js';
+
+      // Configuración de Estilos por Categoría
+      const catConfig = {
+        mandamiento: {
+          bg: 'linear-gradient(135deg, #0d9488, #115e59, #1e293b)', // Teal-Slate
+          badgeClass: 'bg-teal-100 text-teal-800 border border-teal-200',
+          cardHue: 'border-t-8 border-teal-500',
+        },
+        promesa: {
+          bg: 'linear-gradient(135deg, #d97706, #b45309, #1e293b)', // Amber-Slate
+          badgeClass: 'bg-amber-100 text-amber-800 border border-amber-200',
+          cardHue: 'border-t-8 border-amber-500',
+        },
+        verdad: {
+          bg: 'linear-gradient(135deg, #db2777, #be185d, #1e293b)', // Pink-Slate
+          badgeClass: 'bg-rose-100 text-rose-800 border border-rose-200',
+          cardHue: 'border-t-8 border-rose-500',
+        },
+        oración: {
+          bg: 'linear-gradient(135deg, #4f46e5, #3730a3, #1e293b)', // Indigo-Slate
+          badgeClass: 'bg-indigo-100 text-indigo-800 border border-indigo-200',
+          cardHue: 'border-t-8 border-indigo-500',
+        },
+        ejemplo: {
+          bg: 'linear-gradient(135deg, #0284c7, #0369a1, #1e293b)', // Sky-Slate
+          badgeClass: 'bg-sky-100 text-sky-800 border border-sky-200',
+          cardHue: 'border-t-8 border-sky-500',
+        },
+      };
+
+      let currentIdx = 0;
+      let favorites = JSON.parse(localStorage.getItem('fav_verses')) || [];
+
+      // Inicializar App
+      function init() {
+        showVerse(0);
+        updateFavBadge();
+        lucide.createIcons();
+      }
+
+      // Mostrar Versículo con animación suave
+      function showVerse(index) {
+        currentIdx = index;
+        const verse = versesDB[index];
+        const config = catConfig[verse.cat];
+
+        // Animación de salida de la tarjeta
+        const card = document.getElementById('verse-card');
+        card.classList.add('scale-95', 'opacity-0');
+
+        setTimeout(() => {
+          // Cambiar fondo del body
+          document.getElementById('body-bg').style.background = config.bg;
+
+          // Configurar tarjeta
+          card.className = `bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 transition-all duration-700 transform scale-100 flex flex-col justify-between min-h-[380px] ${config.cardHue}`;
+
+          // Cambiar textos y categorías
+          document.getElementById('category-badge').textContent = verse.cat;
+          document.getElementById(
+            'category-badge'
+          ).className = `px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm ${config.badgeClass}`;
+          document.getElementById('verse-ref-top').textContent = verse.ref;
+          document.getElementById('verse-text').textContent = `"${verse.text}"`;
+          document.getElementById(
+            'verse-reference'
+          ).textContent = `— ${verse.ref}`;
+
+          // Actualizar icono de favoritos
+          updateFavIcon();
+
+          // Quitar clases de animación de salida
+          card.classList.remove('scale-95', 'opacity-0');
+        }, 300);
+      }
+
+      // Avanzar versículo de forma pseudo-aleatoria utilizando toda la base de datos
+      function nextVerse() {
+        let nextIdx = Math.floor(Math.random() * versesDB.length);
+        while (nextIdx === currentIdx && versesDB.length > 1) {
+          nextIdx = Math.floor(Math.random() * versesDB.length);
+        }
+        showVerse(nextIdx);
+      }
+
+      // Copiar al Portapapeles
+      function copyVerse() {
+        const v = versesDB[currentIdx];
+        const textToCopy = `"${v.text}" — ${v.ref}`;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          showToast('¡Copiado con amor! ✨');
+        });
+      }
+
+      // Mostrar Toast de notificación
+      function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-msg').textContent = msg;
+        toast.classList.remove('opacity-0', 'pointer-events-none');
+        toast.classList.add('opacity-100');
+        setTimeout(() => {
+          toast.classList.remove('opacity-100');
+          toast.classList.add('opacity-0', 'pointer-events-none');
+        }, 2500);
+      }
+
+      // Sistema de Favoritos
+      function toggleFavorite() {
+        const v = versesDB[currentIdx];
+        const index = favorites.findIndex((item) => item.ref === v.ref);
+
+        if (index > -1) {
+          favorites.splice(index, 1);
+          showToast('Removido de tus favoritos 🤍');
+        } else {
+          favorites.push(v);
+          showToast('¡Guardado en tus favoritos! ❤️');
+        }
+
+        localStorage.setItem('fav_verses', JSON.stringify(favorites));
+        updateFavIcon();
+        updateFavBadge();
+      }
+
+      function updateFavIcon() {
+        const v = versesDB[currentIdx];
+        const isFav = favorites.some((item) => item.ref === v.ref);
+        const icon = document.getElementById('fav-icon');
+        if (isFav) {
+          icon.classList.add('fill-rose-500', 'text-rose-500');
+        } else {
+          icon.classList.remove('fill-rose-500', 'text-rose-500');
+        }
+      }
+
+      function updateFavBadge() {
+        const badge = document.getElementById('fav-badge');
+        if (favorites.length > 0) {
+          badge.textContent = favorites.length;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      }
+
+      // Modales de Interacción
+      function openReflection() {
+        const modal = document.getElementById('reflection-modal');
+        const v = versesDB[currentIdx];
+        document.getElementById('reflection-content').innerHTML = `
+          <p class="text-sm italic text-indigo-500 mb-2">${v.ref}</p>
+          <p class="font-semibold text-slate-800 mb-4">"${v.text}"</p>
+          <p class="text-slate-600 leading-relaxed">${v.reflection}</p>
+        `;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.classList.remove('opacity-0');
+          modal.querySelector('div').classList.remove('scale-95');
+        }, 10);
+      }
+
+      function closeReflection() {
+        const modal = document.getElementById('reflection-modal');
+        modal.classList.add('opacity-0');
+        modal.querySelector('div').classList.add('scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+      }
+
+      function toggleFavoritesModal() {
+        const modal = document.getElementById('favorites-modal');
+        const list = document.getElementById('favorites-list');
+
+        if (modal.classList.contains('hidden')) {
+          // Renderizar lista
+          if (favorites.length === 0) {
+            list.innerHTML = `<p class="text-center text-slate-400 py-6 text-sm">Aún no has guardado ningún versículo. Toca el corazón en tus textos preferidos.</p>`;
+          } else {
+            list.innerHTML = favorites
+              .map(
+                (v, i) => `
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-slate-100 transition duration-200">
+                  <p class="text-xs font-bold uppercase tracking-wide text-indigo-600 mb-1">${v.cat}</p>
+                  <p class="text-sm font-medium text-slate-700 italic mb-2">"${v.text}"</p>
+                  <div class="flex justify-between items-center text-xs text-slate-400">
+                    <span>${v.ref}</span>
+                    <button id="delete-fav-${i}" class="text-rose-500 hover:text-rose-700 font-semibold">Eliminar</button>
+                  </div>
+                </div>
+              `
+              )
+              .join('');
+
+            // Asignar los eventos dinámicamente debido al entorno del módulo
+            favorites.forEach((_, i) => {
+              document
+                .getElementById(`delete-fav-${i}`)
+                .addEventListener('click', () => {
+                  removeFavFromList(i);
+                });
+            });
+          }
+          modal.classList.remove('hidden');
+          setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modal.querySelector('div').classList.remove('scale-95');
+          }, 10);
+        } else {
+          modal.classList.add('opacity-0');
+          modal.querySelector('div').classList.add('scale-95');
+          setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+      }
+
+      function removeFavFromList(idx) {
+        favorites.splice(idx, 1);
+        localStorage.setItem('fav_verses', JSON.stringify(favorites));
+        updateFavBadge();
+        updateFavIcon();
+        // Forzar re-render de la lista
+        document.getElementById('favorites-modal').classList.add('hidden');
+        toggleFavoritesModal();
+      }
+
+      function openLetterModal() {
+        const modal = document.getElementById('letter-modal');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          modal.classList.remove('opacity-0');
+          modal.querySelector('div').classList.remove('scale-95');
+        }, 10);
+      }
+
+      function closeLetterModal() {
+        const modal = document.getElementById('letter-modal');
+        modal.classList.add('opacity-0');
+        modal.querySelector('div').classList.add('scale-95');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+      }
+
+      // Mapeamos las funciones locales al objeto global window para que sigan funcionando desde las llamadas inline de los botones HTML
+      window.nextVerse = nextVerse;
+      window.copyVerse = copyVerse;
+      window.toggleFavorite = toggleFavorite;
+      window.openReflection = openReflection;
+      window.closeReflection = closeReflection;
+      window.toggleFavoritesModal = toggleFavoritesModal;
+      window.removeFavFromList = removeFavFromList;
+      window.openLetterModal = openLetterModal;
+      window.closeLetterModal = closeLetterModal;
+
+      // Registrar Service Worker para PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then((reg) =>
+              console.log('Service Worker registrado con éxito', reg)
+            )
+            .catch((err) =>
+              console.warn('Error al registrar Service Worker', err)
+            );
+        });
+      }
+
+      window.onload = init;
+    </script>
+  </body>
+</html>
