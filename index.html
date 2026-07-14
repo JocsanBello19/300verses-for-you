@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Semillas de Fe & Amor</title>
-    <!-- Tailwind CSS para un diseño espectacular -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Iconos de Lucide para botones estéticos -->
+    <!-- Iconos de Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts para tipografía elegante -->
+    <!-- Google Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -35,15 +35,9 @@
         animation: gradientTransition 15s ease infinite;
       }
       @keyframes gradientTransition {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
     </style>
   </head>
@@ -91,7 +85,7 @@
             Cargando...
           </span>
           <span class="text-xs text-slate-400 font-medium" id="verse-ref-top"
-            >Filipenses 4:13</span
+            >---</span
           >
         </div>
 
@@ -105,13 +99,13 @@
             id="verse-text"
             class="text-xl md:text-2xl font-medium text-slate-800 leading-relaxed serif-title px-1"
           >
-            "Todo lo puedo en Cristo que me fortalece."
+            "Cargando promesas..."
           </p>
           <p
             id="verse-reference"
             class="text-sm font-semibold mt-4 tracking-wider text-slate-500 uppercase"
           >
-            — Filipenses 4:13
+            — 
           </p>
         </div>
 
@@ -176,8 +170,7 @@
       >
         <div class="flex justify-between items-start mb-4">
           <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="book-open" class="text-indigo-500"></i> Reflexión
-            del Día
+            <i data-lucide="book-open" class="text-indigo-500"></i> Reflexión del Día
           </h3>
           <button
             onclick="closeReflection()"
@@ -213,8 +206,7 @@
       >
         <div class="flex justify-between items-center mb-4">
           <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="bookmark" class="text-rose-500"></i> Tus Versos
-            Guardados
+            <i data-lucide="bookmark" class="text-rose-500"></i> Tus Versos Guardados
           </h3>
           <button
             onclick="toggleFavoritesModal()"
@@ -284,36 +276,43 @@
 
     <!-- Lógica de la Aplicación Sincronizada -->
     <script type="module">
-      // Importamos directamente la base de datos real y unificada de la aplicación
-      import versesDB from '../src/data/versesDB.js';
+      // Asegúrate de que la ruta aquí es la correcta hacia tu archivo.
+      // Si están en la misma carpeta usa './versesDB.js'
+      import versesDB from './versesDB.js';
 
       // Configuración de Estilos por Categoría
       const catConfig = {
         mandamiento: {
-          bg: 'linear-gradient(135deg, #0d9488, #115e59, #1e293b)', // Teal-Slate
+          bg: 'linear-gradient(135deg, #0d9488, #115e59, #1e293b)',
           badgeClass: 'bg-teal-100 text-teal-800 border border-teal-200',
           cardHue: 'border-t-8 border-teal-500',
         },
         promesa: {
-          bg: 'linear-gradient(135deg, #d97706, #b45309, #1e293b)', // Amber-Slate
+          bg: 'linear-gradient(135deg, #d97706, #b45309, #1e293b)',
           badgeClass: 'bg-amber-100 text-amber-800 border border-amber-200',
           cardHue: 'border-t-8 border-amber-500',
         },
         verdad: {
-          bg: 'linear-gradient(135deg, #db2777, #be185d, #1e293b)', // Pink-Slate
+          bg: 'linear-gradient(135deg, #db2777, #be185d, #1e293b)',
           badgeClass: 'bg-rose-100 text-rose-800 border border-rose-200',
           cardHue: 'border-t-8 border-rose-500',
         },
         oración: {
-          bg: 'linear-gradient(135deg, #4f46e5, #3730a3, #1e293b)', // Indigo-Slate
+          bg: 'linear-gradient(135deg, #4f46e5, #3730a3, #1e293b)',
           badgeClass: 'bg-indigo-100 text-indigo-800 border border-indigo-200',
           cardHue: 'border-t-8 border-indigo-500',
         },
         ejemplo: {
-          bg: 'linear-gradient(135deg, #0284c7, #0369a1, #1e293b)', // Sky-Slate
+          bg: 'linear-gradient(135deg, #0284c7, #0369a1, #1e293b)',
           badgeClass: 'bg-sky-100 text-sky-800 border border-sky-200',
           cardHue: 'border-t-8 border-sky-500',
         },
+        // Un estilo por defecto en caso de que una categoría no coincida exactamente
+        default: {
+          bg: 'linear-gradient(135deg, #64748b, #475569, #0f172a)',
+          badgeClass: 'bg-slate-100 text-slate-800 border border-slate-200',
+          cardHue: 'border-t-8 border-slate-500',
+        }
       };
 
       let currentIdx = 0;
@@ -321,6 +320,10 @@
 
       // Inicializar App
       function init() {
+        if (!versesDB || versesDB.length === 0) {
+          console.error("No se encontraron versículos. Revisa el import.");
+          return;
+        }
         showVerse(0);
         updateFavBadge();
         lucide.createIcons();
@@ -330,7 +333,10 @@
       function showVerse(index) {
         currentIdx = index;
         const verse = versesDB[index];
-        const config = catConfig[verse.cat];
+        
+        // Convertimos a minúscula para evitar errores de tipeo y buscamos la configuración
+        const catKey = verse.cat ? verse.cat.toLowerCase() : '';
+        const config = catConfig[catKey] || catConfig.default;
 
         // Animación de salida de la tarjeta
         const card = document.getElementById('verse-card');
@@ -344,15 +350,11 @@
           card.className = `bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 transition-all duration-700 transform scale-100 flex flex-col justify-between min-h-[380px] ${config.cardHue}`;
 
           // Cambiar textos y categorías
-          document.getElementById('category-badge').textContent = verse.cat;
-          document.getElementById(
-            'category-badge'
-          ).className = `px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm ${config.badgeClass}`;
+          document.getElementById('category-badge').textContent = verse.cat || 'General';
+          document.getElementById('category-badge').className = `px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm ${config.badgeClass}`;
           document.getElementById('verse-ref-top').textContent = verse.ref;
           document.getElementById('verse-text').textContent = `"${verse.text}"`;
-          document.getElementById(
-            'verse-reference'
-          ).textContent = `— ${verse.ref}`;
+          document.getElementById('verse-reference').textContent = `— ${verse.ref}`;
 
           // Actualizar icono de favoritos
           updateFavIcon();
@@ -362,7 +364,7 @@
         }, 300);
       }
 
-      // Avanzar versículo de forma pseudo-aleatoria utilizando toda la base de datos
+      // Avanzar versículo de forma aleatoria
       function nextVerse() {
         let nextIdx = Math.floor(Math.random() * versesDB.length);
         while (nextIdx === currentIdx && versesDB.length > 1) {
@@ -435,11 +437,16 @@
       function openReflection() {
         const modal = document.getElementById('reflection-modal');
         const v = versesDB[currentIdx];
+        
+        // Validar si existe reflexión, sino poner mensaje por defecto
+        const reflectionText = v.reflection || "Dios tiene un mensaje especial para ti hoy a través de este versículo.";
+        
         document.getElementById('reflection-content').innerHTML = `
           <p class="text-sm italic text-indigo-500 mb-2">${v.ref}</p>
           <p class="font-semibold text-slate-800 mb-4">"${v.text}"</p>
-          <p class="text-slate-600 leading-relaxed">${v.reflection}</p>
+          <p class="text-slate-600 leading-relaxed">${reflectionText}</p>
         `;
+        
         modal.classList.remove('hidden');
         setTimeout(() => {
           modal.classList.remove('opacity-0');
@@ -459,7 +466,6 @@
         const list = document.getElementById('favorites-list');
 
         if (modal.classList.contains('hidden')) {
-          // Renderizar lista
           if (favorites.length === 0) {
             list.innerHTML = `<p class="text-center text-slate-400 py-6 text-sm">Aún no has guardado ningún versículo. Toca el corazón en tus textos preferidos.</p>`;
           } else {
@@ -478,7 +484,6 @@
               )
               .join('');
 
-            // Asignar los eventos dinámicamente debido al entorno del módulo
             favorites.forEach((_, i) => {
               document
                 .getElementById(`delete-fav-${i}`)
@@ -504,7 +509,6 @@
         localStorage.setItem('fav_verses', JSON.stringify(favorites));
         updateFavBadge();
         updateFavIcon();
-        // Forzar re-render de la lista
         document.getElementById('favorites-modal').classList.add('hidden');
         toggleFavoritesModal();
       }
@@ -525,7 +529,7 @@
         setTimeout(() => modal.classList.add('hidden'), 300);
       }
 
-      // Mapeamos las funciones locales al objeto global window para que sigan funcionando desde las llamadas inline de los botones HTML
+      // Mapeamos las funciones locales al objeto global window
       window.nextVerse = nextVerse;
       window.copyVerse = copyVerse;
       window.toggleFavorite = toggleFavorite;
@@ -541,16 +545,13 @@
         window.addEventListener('load', () => {
           navigator.serviceWorker
             .register('/sw.js')
-            .then((reg) =>
-              console.log('Service Worker registrado con éxito', reg)
-            )
-            .catch((err) =>
-              console.warn('Error al registrar Service Worker', err)
-            );
+            .then((reg) => console.log('Service Worker registrado con éxito', reg))
+            .catch((err) => console.warn('Error al registrar Service Worker', err));
         });
       }
 
-      window.onload = init;
+      // En lugar de window.onload (que puede fallar en módulos diferidos), iniciamos directamente:
+      init();
     </script>
   </body>
 </html>
