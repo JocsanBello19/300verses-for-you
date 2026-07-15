@@ -68,25 +68,33 @@
   >
     <!-- Encabezado de la App -->
     <header class="w-full max-w-md mx-auto pt-6 px-4 relative">
-      <div class="flex justify-between items-start sm:items-center gap-4 mb-6">
+      <!-- relative permite que el botón flote dentro de este contenedor sin empujar el título -->
+      <div class="flex justify-center items-center mb-6 relative min-h-[60px]">
         
-        <!-- Título Limpio -->
-        <h1 id="app-title" class="text-[2.75rem] text-white font-bold romantic-title tracking-wide leading-tight pr-12 sm:pr-0">
+        <!-- px-14 añade un margen grueso a la izquierda y derecha. 
+             Al ser igual de ambos lados, mantiene el centrado perfecto y evita que 
+             el texto choque con el botón si se divide en dos líneas en el celular. -->
+        <h1 id="app-title" class="text-[2.75rem] text-white font-bold romantic-title tracking-wide leading-tight text-center px-14">
           300verses for you
         </h1>
+      
+        <!-- Botón de Favoritos "Flotante" a la derecha -->
+        <!-- absolute y -translate-y-1/2 lo mantienen anclado a la derecha y perfectamente centrado a lo alto del título -->
+        <div class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
+          <!-- Botón Favoritos (Esquina Superior Derecha) -->
+          <button
+            onclick="toggleFavoritesModal()"
+            class="absolute right-2 top-8 p-3 bg-white/10 backdrop-blur-md rounded-2xl text-white hover:bg-white/30 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] border border-white/20 transition-all duration-300 active:scale-95"
+          >
+            <i data-lucide="bookmark" class="h-5 w-5"></i>
+            <span
+              id="fav-badge"
+              class="absolute -top-2 -right-2 bg-gradient-to-tr from-rose-500 to-pink-500 text-white text-[10px] font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg border-2 border-transparent hidden"
+              >0</span
+            >
+          </button>
+        </div>
       </div>
-      <!-- Botón Favoritos (Esquina Superior Derecha) -->
-      <button
-        onclick="toggleFavoritesModal()"
-        class="absolute right-2 top-8 p-3 bg-white/10 backdrop-blur-md rounded-2xl text-white hover:bg-white/30 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] border border-white/20 transition-all duration-300 active:scale-95"
-      >
-        <i data-lucide="bookmark" class="h-5 w-5"></i>
-        <span
-          id="fav-badge"
-          class="absolute -top-2 -right-2 bg-gradient-to-tr from-rose-500 to-pink-500 text-white text-[10px] font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg border-2 border-transparent hidden"
-          >0</span
-        >
-      </button>
     </header>
 
     <!-- Tarjeta Central (Versículo) -->
