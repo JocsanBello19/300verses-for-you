@@ -322,16 +322,17 @@
     <!-- Conexión a Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Lógica de la Aplicación Sincronizada a la Nube -->
+    <!-- Lógica de la Aplicación Sincronizada a la Nube (Con Escudo Anti-Borrados) -->
     <script type="module">
       import versesDB from './versesDB.js';
 
       // --- 1. CONFIGURACIÓN DE SUPABASE ---
-      // PEGA AQUÍ TU URL Y TU CLAVE ANON DE SUPABASE
       const SUPABASE_URL = 'https://hhkdnhpfdtswvlvwwgyq.supabase.co';
-      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhoa2RuaHBmZHRzd3Zsdnd3Z3lxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQwNjk4OTYsImV4cCI6MjA5OTY0NTg5Nn0.PrQ1kfooZAQvu4A-B7o-lFNpA0hOn03up2unMRBduWs';
+      // 👇 REEMPLAZA ESTO POR LA CLAVE CORRECTA (EMPIEZA CON eyJ) 👇
+      const SUPABASE_KEY = 'AQUI_TU_CLAVE_LARGA_QUE_EMPIEZA_CON_eyJ';
       
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      // Aseguramos la conexión con window.supabase
+      const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       // ------------------------------------
 
       const catConfig = {
@@ -344,19 +345,25 @@
       };
 
       let currentIdx = 0;
-      // Ya no leemos de localStorage al inicio, esperamos a Supabase
       let favorites = [];
 
       async function init() {
         if (!versesDB || versesDB.length === 0) return;
         showVerse(0);
         lucide.createIcons();
-        
-        // Descargar los datos de la nube al abrir la app
         await loadFavoritesFromCloud();
       }
 
-      // --- NUEVAS FUNCIONES DE LA NUBE ---
+      // --- FUNCIONES PROTEGIDAS DE LA NUBE ---
+      function loadFromLocalBackup() {
+        const backup = localStorage.getItem('fav_verses_backup');
+        if (backup) {
+          try {
+            favorites = JSON.parse(backup);
+          } catch(e) { console.error("Error leyendo backup local"); }
+        }
+      }
+
       async function loadFavoritesFromCloud() {
         try {
           const { data, error } = await supabaseClient
@@ -365,33 +372,47 @@
             .eq('id', 1)
             .single();
 
-          if (data && data.data) {
+          if (error) {
+            console.error("No se pudo leer Supabase (Verifica tu KEY):", error.message);
+            loadFromLocalBackup(); // Fallback de emergencia
+          } else if (data && data.data && data.data.length > 0) {
+            // Si la nube tiene datos, los usamos
             favorites = data.data;
-            updateFavBadge();
-            updateFavIcon();
-            if(!document.getElementById('favorites-modal').classList.contains('hidden')){
-              renderFavoritesList();
+            localStorage.setItem('fav_verses_backup', JSON.stringify(favorites)); // Refrescamos backup
+          } else {
+            // Si la nube está vacía pero tenemos datos locales, restauramos hacia la nube
+            loadFromLocalBackup();
+            if (favorites.length > 0) {
+              await syncToCloud(); // Empuja los datos locales huérfanos a Supabase
             }
           }
+          
+          updateFavBadge();
+          updateFavIcon();
+          if(!document.getElementById('favorites-modal').classList.contains('hidden')){
+            renderFavoritesList();
+          }
         } catch (err) {
-          console.error("Error cargando de la nube:", err);
+          console.error("Fallo general de red:", err);
+          loadFromLocalBackup();
         }
       }
 
       async function syncToCloud() {
         try {
-          // Guardamos un respaldo local por si se queda sin internet
+          // Siempre guardamos un salvavidas en el celular primero
           localStorage.setItem('fav_verses_backup', JSON.stringify(favorites));
           
-          // Subimos todo a la caja fuerte de Supabase
-          await supabaseClient
+          const { error } = await supabaseClient
             .from('lis_favorites')
             .upsert({ id: 1, data: favorites });
+            
+          if (error) console.error("Error subiendo datos:", error.message);
         } catch (err) {
           console.error("Error guardando en la nube:", err);
         }
       }
-      // -----------------------------------
+      // ---------------------------------------
 
       function showVerse(index) {
         currentIdx = index;
@@ -455,7 +476,6 @@
           showToast('¡Guardado en tus favoritos! ❤️');
         }
 
-        // Sincronizar automáticamente a la nube
         syncToCloud();
         
         updateFavIcon();
@@ -577,7 +597,7 @@
 
       function removeFavFromList(idx) {
         favorites.splice(idx, 1);
-        syncToCloud(); // Sincroniza el borrado
+        syncToCloud(); 
         updateFavBadge();
         updateFavIcon();
         renderFavoritesList();
@@ -585,7 +605,7 @@
 
       function toggleMemorized(idx) {
         favorites[idx].memorized = !favorites[idx].memorized;
-        syncToCloud(); // Sincroniza el progreso
+        syncToCloud(); 
         renderFavoritesList();
         
         if (favorites[idx].memorized) {
