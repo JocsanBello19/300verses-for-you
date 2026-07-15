@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Semillas de Fe & Amor</title>
+    <title>300verses for you</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Iconos de Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -29,133 +29,153 @@
       .serif-title {
         font-family: 'Playfair Display', serif;
       }
-      /* Animación del fondo degradado */
-      .gradient-bg {
-        background-size: 400% 400%;
-        animation: gradientTransition 15s ease infinite;
+      .romantic-title {
+        font-family: 'Dancing Script', cursive;
+        text-shadow: 0 4px 15px rgba(0,0,0,0.15);
       }
-      @keyframes gradientTransition {
+      
+      /* Animación del fondo degradado fluido */
+      .gradient-bg {
+        background-size: 300% 300%;
+        animation: gradientMove 12s ease infinite;
+      }
+      
+      @keyframes gradientMove {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
       }
+
+      /* Scrollbar estilizado para las listas */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 10px;
+      }
     </style>
   </head>
   <body
-    class="gradient-bg min-h-screen flex flex-col justify-between p-4 transition-all duration-1000 ease-in-out text-slate-800"
+    class="gradient-bg min-h-screen flex flex-col justify-between p-4 sm:p-6 transition-all duration-1000 ease-in-out text-slate-800"
     id="body-bg"
   >
     <!-- Encabezado de la App -->
     <header
-      class="w-full max-w-md mx-auto flex justify-between items-center pt-4 px-2"
+      class="w-full max-w-md mx-auto flex justify-center items-center pt-6 px-2 relative"
     >
-      <div>
-        <h1 class="text-xs uppercase tracking-widest text-white/80 font-bold">
-          Pan de Vida
+      <div class="text-center">
+        <h1 class="text-[2.75rem] leading-none text-white romantic-title tracking-wide" id="app-title">
+          300verses for you
         </h1>
-        <p class="text-lg font-semibold text-white serif-title" id="app-title">
-          Semillas de Fe
-        </p>
       </div>
+      <!-- Botón Favoritos (Esquina Superior Derecha) -->
       <button
         onclick="toggleFavoritesModal()"
-        class="relative p-2 bg-white/10 backdrop-blur-md rounded-full text-white hover:bg-white/20 transition"
+        class="absolute right-2 top-8 p-3 bg-white/10 backdrop-blur-md rounded-2xl text-white hover:bg-white/30 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(0,0,0,0.2)] border border-white/20 transition-all duration-300 active:scale-95"
       >
-        <i data-lucide="bookmark"></i>
+        <i data-lucide="bookmark" class="h-5 w-5"></i>
         <span
           id="fav-badge"
-          class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center hidden"
+          class="absolute -top-2 -right-2 bg-gradient-to-tr from-rose-500 to-pink-500 text-white text-[10px] font-bold w-6 h-6 rounded-full flex items-center justify-center shadow-lg border-2 border-transparent hidden"
           >0</span
         >
       </button>
     </header>
 
     <!-- Tarjeta Central (Versículo) -->
-    <main class="w-full max-w-md mx-auto my-auto py-6">
+    <main class="w-full max-w-md mx-auto my-auto py-8">
       <div
         id="verse-card"
-        class="bg-white/90 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 transition-all duration-700 transform scale-100 flex flex-col justify-between min-h-[380px]"
+        class="group bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 sm:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.15)] border border-white/40 hover:shadow-[0_25px_50px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500 transform scale-100 flex flex-col justify-between min-h-[400px]"
       >
         <!-- Categoría y Tipo -->
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-8">
           <span
             id="category-badge"
-            class="px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm"
+            class="px-4 py-1.5 rounded-full text-[11px] font-extrabold tracking-widest uppercase shadow-sm"
           >
             Cargando...
           </span>
-          <span class="text-xs text-slate-400 font-medium" id="verse-ref-top"
+          <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider bg-slate-50 px-3 py-1 rounded-lg" id="verse-ref-top"
             >---</span
           >
         </div>
 
         <!-- Texto del Versículo -->
-        <div class="my-auto text-center">
+        <div class="my-auto text-center relative">
           <i
             data-lucide="quote"
-            class="mx-auto text-slate-300 mb-4 h-8 w-8 opacity-60"
+            class="mx-auto text-slate-200 mb-6 h-10 w-10 opacity-70 group-hover:scale-110 group-hover:text-indigo-100 transition-all duration-500"
           ></i>
           <p
             id="verse-text"
-            class="text-xl md:text-2xl font-medium text-slate-800 leading-relaxed serif-title px-1"
+            class="text-2xl md:text-3xl font-medium text-slate-800 leading-snug serif-title px-2"
           >
             "Cargando promesas..."
           </p>
           <p
             id="verse-reference"
-            class="text-sm font-semibold mt-4 tracking-wider text-slate-500 uppercase"
+            class="text-sm font-bold mt-6 tracking-widest text-slate-400 uppercase"
           >
             — 
           </p>
         </div>
 
         <!-- Botones de Acción de la Tarjeta -->
-        <div class="grid grid-cols-3 gap-3 mt-8 pt-4 border-t border-slate-100">
+        <div class="grid grid-cols-3 gap-3 mt-10 pt-5 border-t border-slate-100/80">
           <button
             onclick="copyVerse()"
-            class="flex flex-col items-center justify-center p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-xl transition"
+            class="flex flex-col items-center justify-center p-3 text-slate-400 hover:text-slate-800 hover:bg-slate-50 hover:shadow-sm rounded-2xl transition-all duration-300"
           >
-            <i data-lucide="copy" class="h-5 w-5 mb-1"></i>
-            <span class="text-[10px] font-semibold">Copiar</span>
+            <i data-lucide="copy" class="h-5 w-5 mb-1.5"></i>
+            <span class="text-[11px] font-bold tracking-wide">Copiar</span>
           </button>
 
           <button
             onclick="openReflection()"
-            class="flex flex-col items-center justify-center p-2 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-xl transition font-medium"
+            class="flex flex-col items-center justify-center p-3 text-indigo-400 hover:text-indigo-700 hover:bg-indigo-50 hover:shadow-sm rounded-2xl transition-all duration-300"
           >
-            <i data-lucide="heart-handshake" class="h-5 w-5 mb-1"></i>
-            <span class="text-[10px] font-bold">Reflexión</span>
+            <i data-lucide="sparkles" class="h-5 w-5 mb-1.5"></i>
+            <span class="text-[11px] font-bold tracking-wide">Reflexión</span>
           </button>
 
           <button
             onclick="toggleFavorite()"
-            class="flex flex-col items-center justify-center p-2 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition"
+            class="flex flex-col items-center justify-center p-3 text-slate-400 hover:text-rose-600 hover:bg-rose-50 hover:shadow-sm rounded-2xl transition-all duration-300"
           >
-            <i id="fav-icon" data-lucide="heart" class="h-5 w-5 mb-1"></i>
-            <span class="text-[10px] font-semibold">Favorito</span>
+            <i id="fav-icon" data-lucide="heart" class="h-5 w-5 mb-1.5 transition-transform duration-300 active:scale-125"></i>
+            <span class="text-[11px] font-bold tracking-wide">Favorito</span>
           </button>
         </div>
       </div>
 
-      <!-- Botón Siguiente Versículo -->
-      <div class="mt-6 flex justify-center">
+      <!-- Botón Siguiente Versículo Ultramoderno -->
+      <div class="mt-10 flex justify-center">
         <button
           onclick="nextVerse()"
-          class="flex items-center gap-2 bg-white text-slate-800 font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300"
+          class="relative overflow-hidden group flex items-center gap-3 bg-white/90 backdrop-blur-md text-slate-800 font-extrabold px-10 py-4 rounded-full shadow-[0_10px_25px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_35px_rgba(79,70,229,0.25)] border border-white hover:border-indigo-200 hover:-translate-y-1.5 active:scale-95 transition-all duration-300"
         >
-          Siguiente Versículo
-          <i data-lucide="arrow-right" class="h-5 w-5"></i>
+          <span class="relative z-10 text-sm tracking-wide group-hover:bg-gradient-to-r group-hover:from-indigo-600 group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+            Siguiente Versículo
+          </span>
+          <i data-lucide="arrow-right" class="h-5 w-5 group-hover:text-purple-600 transition-colors duration-300 relative z-10 group-hover:translate-x-1"></i>
+          <!-- Resplandor interno hover -->
+          <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-indigo-50/50 to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </button>
       </div>
     </main>
 
-    <!-- Botón de Carta Secreta Dedicada (Flotante) -->
-    <footer class="w-full max-w-md mx-auto flex justify-center pb-4">
+    <!-- Botón de Carta Secreta Dedicada -->
+    <footer class="w-full max-w-md mx-auto flex justify-center pb-8 pt-4">
       <button
         onclick="openLetterModal()"
-        class="flex items-center gap-2 bg-gradient-to-r from-rose-400 to-pink-500 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-md hover:opacity-90 transition animate-bounce"
+        class="flex items-center gap-2 bg-gradient-to-r from-rose-400 via-pink-500 to-rose-400 bg-[length:200%_auto] text-white text-[13px] font-bold px-6 py-3 rounded-full shadow-[0_8px_20px_rgba(225,29,72,0.3)] hover:shadow-[0_12px_25px_rgba(225,29,72,0.5)] border border-white/20 hover:border-white/50 hover:-translate-y-1 hover:bg-right active:scale-95 transition-all duration-500 animate-pulse hover:animate-none"
       >
-        <i data-lucide="sparkles" class="h-4 w-4"></i>
+        <i data-lucide="gift" class="h-4 w-4"></i>
         Un mensaje para ti, especial
       </button>
     </footer>
@@ -163,32 +183,35 @@
     <!-- MODAL: Reflexión Devocional -->
     <div
       id="reflection-modal"
-      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
+      class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
     >
       <div
-        class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-all duration-300"
+        class="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl transform scale-95 transition-all duration-300 border border-slate-100"
       >
-        <div class="flex justify-between items-start mb-4">
-          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="book-open" class="text-indigo-500"></i> Reflexión del Día
+        <div class="flex justify-between items-start mb-6">
+          <h3 class="text-xl font-bold text-slate-800 flex items-center gap-3">
+            <div class="p-2 bg-indigo-50 rounded-xl">
+              <i data-lucide="book-open" class="text-indigo-600 h-5 w-5"></i>
+            </div>
+            Reflexión
           </h3>
           <button
             onclick="closeReflection()"
-            class="text-slate-400 hover:text-slate-600 p-1"
+            class="text-slate-400 hover:text-rose-500 bg-slate-50 hover:bg-rose-50 p-2 rounded-full transition-colors"
           >
-            <i data-lucide="x" class="h-6 w-6"></i>
+            <i data-lucide="x" class="h-5 w-5"></i>
           </button>
         </div>
         <div
-          class="max-h-[300px] overflow-y-auto pr-2 text-slate-600 leading-relaxed space-y-3"
+          class="max-h-[300px] overflow-y-auto pr-3 text-slate-600 leading-relaxed space-y-4"
           id="reflection-content"
         >
           <!-- Contenido dinámico -->
         </div>
-        <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+        <div class="mt-8 pt-6 border-t border-slate-100 flex justify-end">
           <button
             onclick="closeReflection()"
-            class="bg-indigo-600 text-white font-semibold px-6 py-2 rounded-xl hover:bg-indigo-700 transition"
+            class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold tracking-wide px-8 py-3 rounded-2xl shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition-all duration-300"
           >
             Amén, gracias
           </button>
@@ -198,118 +221,134 @@
 
     <!-- MODAL: Favoritos -->
     <div
-      id="favorites-modal"
-      class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
+    id="favorites-modal"
+    class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex flex-col items-center justify-end sm:justify-center p-0 sm:p-4 hidden opacity-0 transition-all duration-300"
+  >
+    <!-- Se añadieron límites estrictos de altura (max-h-[85vh]) y flex-col para forzar el scroll -->
+    <div
+      class="bg-white rounded-t-[2rem] sm:rounded-[2rem] max-w-md w-full p-6 sm:p-8 shadow-2xl transform translate-y-full sm:translate-y-0 sm:scale-95 transition-all duration-300 flex flex-col max-h-[85vh] sm:max-h-[80vh]"
+      id="favorites-modal-card"
     >
-      <div
-        class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-all duration-300"
-      >
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <i data-lucide="bookmark" class="text-rose-500"></i> Tus Versos Guardados
-          </h3>
-          <button
-            onclick="toggleFavoritesModal()"
-            class="text-slate-400 hover:text-slate-600 p-1"
-          >
-            <i data-lucide="x" class="h-6 w-6"></i>
-          </button>
-        </div>
-        <div
-          id="favorites-list"
-          class="max-h-[350px] overflow-y-auto pr-2 space-y-3 text-slate-600"
+      <!-- shrink-0 evita que este encabezado se aplaste cuando la lista es muy larga -->
+      <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100 shrink-0">
+        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-3">
+          <div class="p-2 bg-rose-50 rounded-xl">
+            <i data-lucide="heart" class="text-rose-500 h-5 w-5 fill-rose-500"></i>
+          </div>
+          Tus Favoritos
+        </h3>
+        <button
+          onclick="toggleFavoritesModal()"
+          class="text-slate-400 hover:text-slate-700 bg-slate-50 hover:bg-slate-200 p-2 rounded-full transition-colors"
         >
-          <!-- Lista de favoritos -->
-        </div>
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+      
+      <!-- overflow-y-auto activa la barra de scroll vertical estilizada -->
+      <div
+        id="favorites-list"
+        class="flex-1 overflow-y-auto pr-2 space-y-4 text-slate-600"
+      >
+        <!-- Lista de favoritos generada por JS -->
       </div>
     </div>
+  </div>
 
-    <!-- MODAL: Carta Secreta de Dedicatoria -->
+    <!-- ======================================================= -->
+    <!-- MODAL: CARTA SECRETA DE DEDICATORIA                       -->
+    <!-- Aquí puedes modificar las líneas de texto para tu novia -->
+    <!-- ======================================================= -->
     <div
       id="letter-modal"
-      class="fixed inset-0 bg-slate-900/65 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
+      class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-300"
     >
       <div
-        class="bg-gradient-to-b from-rose-50 to-white rounded-3xl max-w-sm w-full p-8 shadow-2xl text-center relative border border-rose-100"
+        class="bg-gradient-to-br from-rose-50 via-white to-pink-50 rounded-[2.5rem] max-w-sm w-full p-8 sm:p-10 shadow-[0_20px_50px_rgba(225,29,72,0.2)] text-center relative border border-rose-100 transform scale-95 transition-all duration-500"
       >
         <div
-          class="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-rose-500 text-white p-4 rounded-full shadow-lg"
+          class="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gradient-to-b from-rose-400 to-rose-600 text-white p-5 rounded-full shadow-xl border-4 border-white"
         >
-          <i data-lucide="heart" class="h-8 w-8 fill-current"></i>
+          <i data-lucide="heart" class="h-8 w-8 fill-current animate-pulse"></i>
         </div>
         <button
           onclick="closeLetterModal()"
-          class="absolute top-4 right-4 text-slate-400 hover:text-rose-500"
+          class="absolute top-5 right-5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 p-2 rounded-full transition-colors"
         >
-          <i data-lucide="x" class="h-6 w-6"></i>
+          <i data-lucide="x" class="h-5 w-5"></i>
         </button>
-        <div class="mt-6">
-          <h3 class="text-2xl serif-title font-bold text-rose-600 mb-4">
-            Para una persona especial
+        <div class="mt-8">
+          
+          <!-- Título de la dedicatoria -->
+          <h3 class="text-3xl romantic-title font-bold text-rose-600 mb-6">
+            Para Lis, una hija maravillosa y amada del Señor
           </h3>
-          <div class="text-slate-600 leading-relaxed italic text-sm space-y-4">
-            <p>
+          
+          <!-- Cuerpos de texto. ¡Modifica lo que está entre las etiquetas <p>! -->
+          <div class="text-slate-700 leading-relaxed text-[15px] space-y-5">
+            <p class="italic">
               "Le pido a Dios que esta aplicación no solo sea una herramienta en
-              tu celular, sino un pequeño refugio de paz en tu día a día."
+              tu celular, sino un pequeño refugio de paz y edificación en tu día a día."
             </p>
-            <p>
-              "Que cada promesa y palabra aquí guardada te recuerde lo valiosa
-              que eres para Dios, y el hermoso reflejo de Su amor que transmites
+            <p class="italic">
+              "Que cada promesa y palabra aquí guardada te ayude a crecer más en Cristo, y te recuerde lo valiosa
+              que eres para Dios y el hermoso reflejo de Su amor que transmites
               al mundo."
             </p>
-            <p class="font-semibold text-rose-500 not-italic">
-              — Con mucho cariño y orando siempre por ti.
+            <p class="font-bold text-rose-500 mt-6 bg-rose-100/50 py-2 rounded-xl">
+              — Con mucho cariño y orando siempre por ti, Jocsan Bello.
             </p>
           </div>
+
         </div>
       </div>
     </div>
+    <!-- ======================================================= -->
 
     <!-- Toast (Aviso temporal de copiado) -->
     <div
       id="toast"
-      class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-6 py-3 rounded-full shadow-lg text-xs font-semibold z-50 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2"
+      class="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-slate-800/95 backdrop-blur text-white px-6 py-3.5 rounded-full shadow-2xl border border-slate-600 text-[13px] font-bold tracking-wide z-50 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3"
     >
-      <i data-lucide="check" class="text-emerald-400 h-4 w-4"></i>
+      <div class="bg-emerald-500/20 p-1 rounded-full">
+        <i data-lucide="check" class="text-emerald-400 h-4 w-4"></i>
+      </div>
       <span id="toast-msg">Copiado con amor ✨</span>
     </div>
 
     <!-- Lógica de la Aplicación Sincronizada -->
     <script type="module">
-      // Asegúrate de que la ruta aquí es la correcta hacia tu archivo.
-      // Si están en la misma carpeta usa './versesDB.js'
       import versesDB from './versesDB.js';
 
-      // Configuración de Estilos por Categoría
+      // Configuración de Estilos por Categoría (Degradados fluidos para animación)
       const catConfig = {
         mandamiento: {
-          bg: 'linear-gradient(135deg, #0d9488, #115e59, #1e293b)',
+          bg: 'linear-gradient(-45deg, #0d9488, #14b8a6, #0f766e, #1e293b)',
           badgeClass: 'bg-teal-100 text-teal-800 border border-teal-200',
           cardHue: 'border-t-8 border-teal-500',
         },
         promesa: {
-          bg: 'linear-gradient(135deg, #d97706, #b45309, #1e293b)',
+          bg: 'linear-gradient(-45deg, #d97706, #f59e0b, #b45309, #1e293b)',
           badgeClass: 'bg-amber-100 text-amber-800 border border-amber-200',
           cardHue: 'border-t-8 border-amber-500',
         },
         verdad: {
-          bg: 'linear-gradient(135deg, #db2777, #be185d, #1e293b)',
+          bg: 'linear-gradient(-45deg, #db2777, #f43f5e, #be185d, #1e293b)',
           badgeClass: 'bg-rose-100 text-rose-800 border border-rose-200',
           cardHue: 'border-t-8 border-rose-500',
         },
         oración: {
-          bg: 'linear-gradient(135deg, #4f46e5, #3730a3, #1e293b)',
+          bg: 'linear-gradient(-45deg, #4f46e5, #6366f1, #3730a3, #1e293b)',
           badgeClass: 'bg-indigo-100 text-indigo-800 border border-indigo-200',
           cardHue: 'border-t-8 border-indigo-500',
         },
         ejemplo: {
-          bg: 'linear-gradient(135deg, #0284c7, #0369a1, #1e293b)',
+          bg: 'linear-gradient(-45deg, #0284c7, #0ea5e9, #0369a1, #1e293b)',
           badgeClass: 'bg-sky-100 text-sky-800 border border-sky-200',
           cardHue: 'border-t-8 border-sky-500',
         },
-        // Un estilo por defecto en caso de que una categoría no coincida exactamente
         default: {
-          bg: 'linear-gradient(135deg, #64748b, #475569, #0f172a)',
+          bg: 'linear-gradient(-45deg, #64748b, #94a3b8, #475569, #0f172a)',
           badgeClass: 'bg-slate-100 text-slate-800 border border-slate-200',
           cardHue: 'border-t-8 border-slate-500',
         }
@@ -318,53 +357,40 @@
       let currentIdx = 0;
       let favorites = JSON.parse(localStorage.getItem('fav_verses')) || [];
 
-      // Inicializar App
       function init() {
-        if (!versesDB || versesDB.length === 0) {
-          console.error("No se encontraron versículos. Revisa el import.");
-          return;
-        }
+        if (!versesDB || versesDB.length === 0) return;
         showVerse(0);
         updateFavBadge();
         lucide.createIcons();
       }
 
-      // Mostrar Versículo con animación suave
       function showVerse(index) {
         currentIdx = index;
         const verse = versesDB[index];
-        
-        // Convertimos a minúscula para evitar errores de tipeo y buscamos la configuración
         const catKey = verse.cat ? verse.cat.toLowerCase() : '';
         const config = catConfig[catKey] || catConfig.default;
 
-        // Animación de salida de la tarjeta
         const card = document.getElementById('verse-card');
         card.classList.add('scale-95', 'opacity-0');
 
         setTimeout(() => {
-          // Cambiar fondo del body
           document.getElementById('body-bg').style.background = config.bg;
+          document.getElementById('body-bg').style.backgroundSize = "300% 300%";
+          
+          // Mantener clases base y aplicar el borde de color respectivo
+          card.className = `group bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 sm:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.15)] border border-white/40 hover:shadow-[0_25px_50px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500 transform scale-100 flex flex-col justify-between min-h-[400px] ${config.cardHue}`;
 
-          // Configurar tarjeta
-          card.className = `bg-white/95 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20 transition-all duration-700 transform scale-100 flex flex-col justify-between min-h-[380px] ${config.cardHue}`;
-
-          // Cambiar textos y categorías
           document.getElementById('category-badge').textContent = verse.cat || 'General';
-          document.getElementById('category-badge').className = `px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-sm ${config.badgeClass}`;
+          document.getElementById('category-badge').className = `px-4 py-1.5 rounded-full text-[11px] font-extrabold tracking-widest uppercase shadow-sm ${config.badgeClass}`;
           document.getElementById('verse-ref-top').textContent = verse.ref;
           document.getElementById('verse-text').textContent = `"${verse.text}"`;
           document.getElementById('verse-reference').textContent = `— ${verse.ref}`;
 
-          // Actualizar icono de favoritos
           updateFavIcon();
-
-          // Quitar clases de animación de salida
           card.classList.remove('scale-95', 'opacity-0');
         }, 300);
       }
 
-      // Avanzar versículo de forma aleatoria
       function nextVerse() {
         let nextIdx = Math.floor(Math.random() * versesDB.length);
         while (nextIdx === currentIdx && versesDB.length > 1) {
@@ -373,7 +399,6 @@
         showVerse(nextIdx);
       }
 
-      // Copiar al Portapapeles
       function copyVerse() {
         const v = versesDB[currentIdx];
         const textToCopy = `"${v.text}" — ${v.ref}`;
@@ -382,19 +407,17 @@
         });
       }
 
-      // Mostrar Toast de notificación
       function showToast(msg) {
         const toast = document.getElementById('toast');
         document.getElementById('toast-msg').textContent = msg;
-        toast.classList.remove('opacity-0', 'pointer-events-none');
-        toast.classList.add('opacity-100');
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+        toast.classList.add('opacity-100', 'translate-y-0');
         setTimeout(() => {
-          toast.classList.remove('opacity-100');
-          toast.classList.add('opacity-0', 'pointer-events-none');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
         }, 2500);
       }
 
-      // Sistema de Favoritos
       function toggleFavorite() {
         const v = versesDB[currentIdx];
         const index = favorites.findIndex((item) => item.ref === v.ref);
@@ -403,13 +426,18 @@
           favorites.splice(index, 1);
           showToast('Removido de tus favoritos 🤍');
         } else {
-          favorites.push(v);
+          // Al agregarlo por defecto no está memorizado
+          favorites.push({ ...v, memorized: false });
           showToast('¡Guardado en tus favoritos! ❤️');
         }
 
         localStorage.setItem('fav_verses', JSON.stringify(favorites));
         updateFavIcon();
         updateFavBadge();
+        
+        if(!document.getElementById('favorites-modal').classList.contains('hidden')){
+            renderFavoritesList();
+        }
       }
 
       function updateFavIcon() {
@@ -417,9 +445,9 @@
         const isFav = favorites.some((item) => item.ref === v.ref);
         const icon = document.getElementById('fav-icon');
         if (isFav) {
-          icon.classList.add('fill-rose-500', 'text-rose-500');
+          icon.classList.add('fill-rose-500', 'text-rose-500', 'scale-110');
         } else {
-          icon.classList.remove('fill-rose-500', 'text-rose-500');
+          icon.classList.remove('fill-rose-500', 'text-rose-500', 'scale-110');
         }
       }
 
@@ -433,18 +461,16 @@
         }
       }
 
-      // Modales de Interacción
       function openReflection() {
         const modal = document.getElementById('reflection-modal');
         const v = versesDB[currentIdx];
-        
-        // Validar si existe reflexión, sino poner mensaje por defecto
         const reflectionText = v.reflection || "Dios tiene un mensaje especial para ti hoy a través de este versículo.";
         
         document.getElementById('reflection-content').innerHTML = `
-          <p class="text-sm italic text-indigo-500 mb-2">${v.ref}</p>
-          <p class="font-semibold text-slate-800 mb-4">"${v.text}"</p>
-          <p class="text-slate-600 leading-relaxed">${reflectionText}</p>
+          <p class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-3">${v.ref}</p>
+          <p class="text-lg font-bold text-slate-800 mb-5 leading-snug">"${v.text}"</p>
+          <div class="h-px w-12 bg-indigo-100 mb-5"></div>
+          <p class="text-slate-600 leading-relaxed text-[15px]">${reflectionText}</p>
         `;
         
         modal.classList.remove('hidden');
@@ -461,45 +487,81 @@
         setTimeout(() => modal.classList.add('hidden'), 300);
       }
 
-      function toggleFavoritesModal() {
-        const modal = document.getElementById('favorites-modal');
+      // SISTEMA DE FAVORITOS (RENDER Y MEMORIZADO)
+      function renderFavoritesList() {
         const list = document.getElementById('favorites-list');
+        if (favorites.length === 0) {
+          list.innerHTML = `
+            <div class="text-center py-10 flex flex-col items-center">
+              <i data-lucide="bookmark-minus" class="h-12 w-12 text-slate-200 mb-4"></i>
+              <p class="text-slate-400 text-sm font-medium">Aún no has guardado nada.</p>
+              <p class="text-slate-400 text-xs mt-1">Toca el corazón para coleccionar tus textos.</p>
+            </div>`;
+        } else {
+          list.innerHTML = favorites
+            .map((v, i) => {
+              const isMem = v.memorized;
+              // Cambios visuales dinámicos según el estado memorizado
+              const bgClass = isMem ? 'bg-emerald-50/70 border-emerald-200' : 'bg-slate-50 border-slate-100 hover:bg-slate-100 hover:border-indigo-100';
+              const borderLeft = isMem ? 'border-l-4 border-l-emerald-400' : 'border-l-4 border-l-indigo-400';
+              const titleColor = isMem ? 'text-emerald-600' : 'text-indigo-600';
+              const btnMemClass = isMem ? 'bg-emerald-100 text-emerald-700 shadow-inner' : 'bg-white text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 shadow-sm border border-slate-200';
+              const iconMemClass = isMem ? 'text-emerald-600' : 'text-slate-400';
 
-        if (modal.classList.contains('hidden')) {
-          if (favorites.length === 0) {
-            list.innerHTML = `<p class="text-center text-slate-400 py-6 text-sm">Aún no has guardado ningún versículo. Toca el corazón en tus textos preferidos.</p>`;
-          } else {
-            list.innerHTML = favorites
-              .map(
-                (v, i) => `
-                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-slate-100 transition duration-200">
-                  <p class="text-xs font-bold uppercase tracking-wide text-indigo-600 mb-1">${v.cat}</p>
-                  <p class="text-sm font-medium text-slate-700 italic mb-2">"${v.text}"</p>
-                  <div class="flex justify-between items-center text-xs text-slate-400">
-                    <span>${v.ref}</span>
-                    <button id="delete-fav-${i}" class="text-rose-500 hover:text-rose-700 font-semibold">Eliminar</button>
+              return `
+              <div class="p-5 rounded-2xl border transition-all duration-300 transform hover:-translate-y-1 hover:shadow-md ${bgClass} ${borderLeft}">
+                <div class="flex justify-between items-start mb-2">
+                    <p class="text-[10px] font-extrabold uppercase tracking-widest ${titleColor}">${v.cat || 'General'}</p>
+                    ${isMem ? `<div class="bg-emerald-200/50 p-1 rounded-full"><i data-lucide="check" class="h-3 w-3 text-emerald-600"></i></div>` : ''}
+                </div>
+                <p class="text-[14px] font-medium text-slate-700 italic mb-4 leading-relaxed">"${v.text}"</p>
+                
+                <div class="flex justify-between items-center border-t border-black/5 pt-3">
+                  <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">${v.ref}</span>
+                  
+                  <div class="flex gap-2">
+                      <!-- Botón Memorizado -->
+                      <button onclick="toggleMemorized(${i})" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all duration-300 ${btnMemClass}">
+                        <i data-lucide="brain-circuit" class="h-3.5 w-3.5 ${iconMemClass}"></i>
+                        ${isMem ? 'Memorizado' : 'Memorizar'}
+                      </button>
+
+                      <!-- Botón Quitar -->
+                      <button onclick="removeFavFromList(${i})" class="flex items-center justify-center p-1.5 bg-white border border-rose-100 rounded-xl text-rose-400 hover:text-white hover:bg-rose-500 hover:shadow-md transition-all duration-300" title="Quitar">
+                        <i data-lucide="trash-2" class="h-4 w-4"></i>
+                      </button>
                   </div>
                 </div>
-              `
-              )
-              .join('');
+              </div>
+            `})
+            .join('');
+        }
+        lucide.createIcons();
+      }
 
-            favorites.forEach((_, i) => {
-              document
-                .getElementById(`delete-fav-${i}`)
-                .addEventListener('click', () => {
-                  removeFavFromList(i);
-                });
-            });
-          }
+      function toggleFavoritesModal() {
+        const modal = document.getElementById('favorites-modal');
+        const card = document.getElementById('favorites-modal-card');
+
+        if (modal.classList.contains('hidden')) {
+          renderFavoritesList();
           modal.classList.remove('hidden');
           setTimeout(() => {
             modal.classList.remove('opacity-0');
-            modal.querySelector('div').classList.remove('scale-95');
+            // Animación dependiente de si es móvil (sube desde abajo) o escritorio (escala central)
+            if (window.innerWidth < 640) {
+              card.classList.remove('translate-y-full');
+            } else {
+              card.classList.remove('scale-95');
+            }
           }, 10);
         } else {
           modal.classList.add('opacity-0');
-          modal.querySelector('div').classList.add('scale-95');
+          if (window.innerWidth < 640) {
+              card.classList.add('translate-y-full');
+          } else {
+              card.classList.add('scale-95');
+          }
           setTimeout(() => modal.classList.add('hidden'), 300);
         }
       }
@@ -509,8 +571,18 @@
         localStorage.setItem('fav_verses', JSON.stringify(favorites));
         updateFavBadge();
         updateFavIcon();
-        document.getElementById('favorites-modal').classList.add('hidden');
-        toggleFavoritesModal();
+        renderFavoritesList(); // Re-renderiza en vivo sin cerrar modal
+      }
+
+      function toggleMemorized(idx) {
+        // Invierte el estado booleano
+        favorites[idx].memorized = !favorites[idx].memorized;
+        localStorage.setItem('fav_verses', JSON.stringify(favorites));
+        renderFavoritesList(); // Re-renderiza para aplicar los colores y el "chulito"
+        
+        if (favorites[idx].memorized) {
+            showToast("¡Excelente! Versículo memorizado 🧠✨");
+        }
       }
 
       function openLetterModal() {
@@ -529,7 +601,7 @@
         setTimeout(() => modal.classList.add('hidden'), 300);
       }
 
-      // Mapeamos las funciones locales al objeto global window
+      // Mapeamos al objeto global window
       window.nextVerse = nextVerse;
       window.copyVerse = copyVerse;
       window.toggleFavorite = toggleFavorite;
@@ -537,20 +609,16 @@
       window.closeReflection = closeReflection;
       window.toggleFavoritesModal = toggleFavoritesModal;
       window.removeFavFromList = removeFavFromList;
+      window.toggleMemorized = toggleMemorized;
       window.openLetterModal = openLetterModal;
       window.closeLetterModal = closeLetterModal;
 
-      // Registrar Service Worker para PWA
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker
-            .register('/sw.js')
-            .then((reg) => console.log('Service Worker registrado con éxito', reg))
-            .catch((err) => console.warn('Error al registrar Service Worker', err));
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
         });
       }
 
-      // En lugar de window.onload (que puede fallar en módulos diferidos), iniciamos directamente:
       init();
     </script>
   </body>
